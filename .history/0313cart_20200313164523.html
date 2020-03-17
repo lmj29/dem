@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+   <tbody>
+       <tr>
+           <td class="name">商品名称</td>
+           <td class="price">单价</td>
+           <td class="num"> 数量</td>
+           <td class="sum">总和</td>
+       </tr>
+       <script src="./js/data.js"></script>
+       <script>
+           let xhrData = cartInfo.data.cartModels;
+           console.log(xhrData)
+           let productTr = ``;
+           let totalTr = ``;
+           let totalNum = 0;
+           let totalPrice = 0;
+           for(let index = 0;index < xhrData.length;index ++){
+               productTr += 
+              `
+              
+                <tr >
+                 <td>${xhrData[index].name}</td>
+                 <td class= produce-price> ${xhrData[index].price.toFixed(2)}</td>
+                 <td><input class= product-num data-index = ${index} value =${xhrData[index].num}</td>
+                 <td class= produce-sum>${xhrData[index].sum.toFixed(2)}</td>
+                </tr> 
+                
+                `;
+              totalNum += xhrData[index].num;
+              totalPrice+=xhrData[index].sum;
+
+           }
+
+           totalTr = 
+           `
+           
+           <tr>
+            <td colspan = 2>总计</td>
+            <td> ${totalNum}</td>
+            <td>${totalPrice.toFixed(2)}</td>
+            </tr>
+
+            `
+         tbody.innerHTML = productTr + totalTr;
+         //修改购物车的商品数量
+         let productNum = document.querySelectorAll('product-num');
+         let productPrice = document.querySelectorAll('product-price');
+         let  productSum = document.querySelectorAll('product-sum');
+         for(let i =0 ; i<productNum.length;i++){
+            productTr.onchange = function(e){
+             console.log(e.target.value)
+             console.log(this.dataset.index)
+             //计算小计的值
+             let sum =( e.target.value  *productPrice[this.dataset.index].innerHTML).toFixed(2);
+             productSum[this.dataset.index].innerHTML = sum;
+         //计算总计
+         let newTotalNum = 0,newTotalPrice = 0;
+         for(let index = 0 ;index < productNum.length;index++){
+             let newTotalNum = 0;newTotalPrice = 0;
+             newTotalNum +=parseInt(productNum[index].value);
+             newTotalPrice +=(productNum[index].value *productPrice[index].innerHTML);
+             console.log(newTotalNum.newTotalPrice)
+        }
+     }
+
+  }
+        
+    </script>
+   </tbody>
+</body>
+</html>

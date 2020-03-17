@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./js/cart.js"></script>
+  <title>Document</title>
+  <style>
+    .goods-num {
+      display: inline-block;
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <table border="1">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="checkbox"></th>
+        <th>商品名称</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>小计</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+    </tbody>
+  </table>
+  <script>
+    // 获取数据，来自cart.js
+    let data = xhrData.data.cartModels;
+    let trTxt = ``;
+    // 商品的内容
+    let goodsTr = ``;
+    // 总计的内容
+    let totalTr = ``;
+    // 总数量
+    // let totalNum = 0;
+    // 总价格
+    // let totalPrice = 0.00;
+
+    for(let i = 0; i < data.length; i ++) {
+      goodsTr += `
+        <tr>
+          <td><input type="checkbox" class="check-item"></td>
+          <td>${data[i].name}</td>
+          <td class=price>${data[i].price.toFixed(2)}</td>
+          <td>
+            <button class="btn" data-index=${i} data-type="reduce">-</button>
+            <input type="text" class=goods-num data-index=${i} value=${data[i].num}>
+            <button class="btn" data-index=${i} data-type="add">+</button>
+          </td>
+          <td class=sum>${data[i].sum.toFixed(2)}</td>
+        </tr>
+       `
+      // 计算总数量和总价格
+      // totalNum += data[i].num;
+      // totalPrice += data[i].sum;
+    }
+    totalTr =  `
+      <tr>
+        <td colspan=3>总计</td>
+        <td class=total-num>0</td>
+        <td class=total-price>0.00</td>
+      </tr>
+    `
+    trTxt = goodsTr+totalTr;
+    tbody.innerHTML = trTxt;
+    // 修改商品的数量
+    let goodsNum = document.querySelectorAll('.goods-num');
+    // 小计
+    let sum = document.querySelectorAll('.sum');
+    // 单价
+    let price = document.querySelectorAll('.price');
+    for(let i = 0;i < goodsNum.length; i ++) {
+      goodsNum[i].onchange = function(e) {
+        computed(e.target.dataset.index);
+      }
+    }
+    // 点击按钮，修改数量
+    let btns = document.querySelectorAll('.btn');
+    for(let i = 0; i < btns.length; i ++) {
+      btns[i].onclick = function() {
+        let goodsIndex = this.dataset.index;
+        // 增加数量，此处应有检查（库存）
+        if(this.dataset.type == 'add') {
+          goodsNum[goodsIndex].value ++
+        }else if(this.dataset.type == 'reduce') {
+          // 减少数量，最小值为1
+          goodsNum[goodsIndex].value > 1 ? goodsNum[goodsIndex].value -- : ``
+        }
+        computed(goodsIndex);
+      }
+    }
+    // 统一计算
+    function computed(trIndex) {
+      // trIndex:商品的索引
+      // 单价
+      let priceVal = price[trIndex].innerText;
+      // 更新小计
+      sum[trIndex].innerHTML = (goodsNum[trIndex].value * priceVal).toFixed(2);
+      // 更新总计
+      updatedTotal()
+    }
+    // 全选-点击全选按钮
+    let checkItem = document.querySelectorAll('.check-item');
+    checkbox.onchange = function() {
+      let flag = this.checked;
+      checkItem.forEach((item) => {
+        item.checked = flag;
+      })
+      // 更新总计
+      updatedTotal()
+    }
+    // 全选-点击商品对应的按钮
+    checkItem.forEach(item => {
+      item.onchange = function() {
+        // 被选中的数量
+        let num = 0;
+        checkItem.forEach((el) => {
+          el.checked ? num ++ : ``
+        })
+        checkbox.checked = num == checkItem.length
+        // 更新总计
+        updatedTotal()
+      }
+    })
+    // 更新总数量中价格
+    function updatedTotal() {
+      let totalNum = 0,totalPrice = 0;
+      for(let i = 0; i < data.length; i ++) {
+        if(checkItem[i].checked) {
+          totalNum += parseInt(goodsNum[i].value);
+          totalPrice += goodsNum[i].value * price[i].innerText;
+        } 
+      }
+      let totalNumEl = document.querySelector('.total-num');
+      totalNumEl.innerText = totalNum;
+      let totalPriceEl = document.querySelector('.total-price');
+      totalPriceEl.innerText = totalPrice.toFixed(2);
+    }
+  </script>
+</body>
+</html>

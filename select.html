@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 创建label标签
+    let proText = document.createElement('label');
+    proText.innerHTML = '请选择省份';
+    document.body.appendChild(proText);
+
+    // 准备省份的数据
+    let proArr = ['河南省','湖北省','浙江省'];
+    let proSecelt = document.createElement('select');
+    for(let i=0;i<proArr.length;i++) {
+      let option = document.createElement('option');
+      option.innerHTML = proArr[i];
+      // 给省份增加index，方便在选择该省份时获取
+      option.value = i;
+      proSecelt.appendChild(option);
+    }
+    // 新增省份对应的select标签
+    document.body.appendChild(proSecelt);
+
+    // 准备城市的数据
+    let henanCity = ['郑州','新乡','焦作'];
+    let hubeiCity = ['武汉','黄冈','随州','恩施'];
+    let zhejiangCity = ['杭州','舟山','宁波','丽水','衢州'];
+    let cityArr = []
+    cityArr.push(henanCity)
+    cityArr.push(hubeiCity)
+    cityArr.push(zhejiangCity)
+    let citySelect = document.createElement('select');
+    // 显示默认
+    for(let index=0;index<cityArr[0].length;index++) {
+      let option = document.createElement('option');
+      option.innerHTML = cityArr[0][index]
+      citySelect.appendChild(option)
+    }
+    // 新增城市的select
+    document.body.appendChild(citySelect);
+
+    // 响应用户操作
+    proSecelt.onchange = function(e) {
+      // 删除之前的城市
+      let opt = citySelect.children
+      // 如果使用index=0;index<opt.length;index++这种方式，会有数据残留。
+      // 因为index增大而opt.length在减小。所以循环条件不满足了
+      for(let index=opt.length-1;index>=0;index--) {
+        citySelect.removeChild(opt[index])
+      }
+      let cityIndex = e.target.value
+      // 根据省份的index，添加新的数据
+      for(let index=0;index<cityArr[cityIndex].length;index++) {
+        let option = document.createElement('option');
+        option.innerHTML = cityArr[cityIndex][index]
+        citySelect.appendChild(option)
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/nav.css">
+  <title>Document</title>
+</head>
+<body>
+  <nav class="topcool">
+    <div class="topheader">
+      <a href="#" class="toplogo"></a>
+      <div class="topnav">
+        <a href="#">首页</a>
+        <a href="#">作品</a>
+        <a href="#">经验</a>
+        <a href="#">欣赏</a>
+        <a href="#">素材</a>
+        <a href="#">招聘</a>
+        <a href="#">活动</a>
+        <span class="morenav">
+          <a href="#">更多</a>
+          <b></b>
+          <ul class="nav-more-ul">
+            <li><a href="#">酷友/设计师</a></li>
+            <li><a href="#">酷友精彩评论</a></li>
+            <li><a href="#">小组</a></li>
+            <li><a href="#">找服务</a></li>
+            <li><a href="#">cool</a></li>
+          </ul>
+        </span>
+      </div>
+      <div class="topheadright">
+        <div class="login">
+          <a href="#">登录</a>|
+          <a href="#">注册</a>
+        </div>
+        <div class="top-search">
+          <form action method="get">
+            <input type="text" name="username" class="top-search-txt">
+            <input type="submit" class="top-search-btn" value>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <script src="./js/jquery-3.3.1.min.js"></script>
+  <script>
+    $(function() {
+      $('.morenav').hover(function(){
+        $(this).find('.nav-more-ul').show();
+        $(this).toggleClass('morenav-hover');
+      },function(){
+        $(this).find('.nav-more-ul').hide();
+        $(this).toggleClass('morenav-hover');
+      })
+    })
+  </script>
+</body>
+</html>
